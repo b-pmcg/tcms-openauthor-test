@@ -5,6 +5,7 @@ import {
   GithubClient,
   TinacmsGithubProvider,
 } from "react-tinacms-github";
+import { HtmlFieldPlugin, MarkdownFieldPlugin } from "react-tinacms-editor";
 
 const enterEditMode = () => {
   return fetch(`/api/preview`).then(() => {
@@ -44,6 +45,7 @@ const MyApp = ({ Component, pageProps }) => {
     toolbar: {
       hidden: !pageProps.preview,
     },
+    plugins: [MarkdownFieldPlugin],
   });
   return (
     <TinaProvider cms={cms}>
