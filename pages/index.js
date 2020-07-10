@@ -1,31 +1,32 @@
-import { useCallback } from "react";
-import Head from "next/head";
-import { join } from "path";
-import matter from "gray-matter";
-import SampleMDX from "../content/sample.md";
+import { useCallback } from 'react';
+import Head from 'next/head';
+import { join } from 'path';
+import matter from 'gray-matter';
+import SampleMDX from '../content/sample.md';
+import dynamic from 'next/dynamic';
 
 // tinaCMS
-import { useCMS, useForm, usePlugin } from "tinacms";
+import { useCMS, useForm, usePlugin } from 'tinacms';
 import {
   getGithubPreviewProps,
   parseJson,
   parseMarkdown,
-} from "next-tinacms-github";
-import { useLocalMarkdownForm } from "next-tinacms-markdown";
-import { GetStaticProps } from "next";
-import { useGithubJsonForm, useGithubMarkdownForm } from "react-tinacms-github";
-import { usePlugins } from "tinacms";
-import { HtmlFieldPlugin, MarkdownFieldPlugin } from "react-tinacms-editor";
+} from 'next-tinacms-github';
+import { useLocalMarkdownForm } from 'next-tinacms-markdown';
+import { GetStaticProps } from 'next';
+import { useGithubJsonForm, useGithubMarkdownForm } from 'react-tinacms-github';
+import { usePlugins } from 'tinacms';
+import { HtmlFieldPlugin, MarkdownFieldPlugin } from 'react-tinacms-editor';
 
 export default function Home({ file }) {
-  MarkdownFieldPlugin.__type = "field";
+  MarkdownFieldPlugin.__type = 'field';
   const formOptions = {
-    label: "Home Pagez",
+    label: 'Home Pagez',
     fields: [
-      { name: "title", label: "Post Titles", component: "text" },
+      { name: 'title', label: 'Post Titles', component: 'text' },
       {
-        name: "markdownBody",
-        label: "Post body",
+        name: 'markdownBody',
+        label: 'Post body',
         component: MarkdownFieldPlugin.Component,
       },
     ],
@@ -35,7 +36,7 @@ export default function Home({ file }) {
   //   fields: [{ name: "title", component: "text" }],
   // };
   const result = useGithubMarkdownForm(file, formOptions);
-  console.log("result", result);
+  console.log('result', result);
   // const result = useLocalMarkdownForm(file, formOptions);
   // const result = useGithubJsonForm(file, formOptions);
   const [data, form] = result;
@@ -60,7 +61,7 @@ export default function Home({ file }) {
           Get started by editing <code>pages/index.js</code>
         </p>
 
-        <Hello />
+        {/* <Hello /> */}
       </main>
     </div>
   );
@@ -75,7 +76,7 @@ export const getStaticProps = async function (passedProps) {
   if (preview) {
     return getGithubPreviewProps({
       ...previewData,
-      fileRelativePath: "content/sample.md",
+      fileRelativePath: 'content/sample.md',
       parse: parseMarkdown,
     });
   }
@@ -85,8 +86,9 @@ export const getStaticProps = async function (passedProps) {
       error: null,
       preview: false,
       file: {
-        fileRelativePath: "content/sample.md",
-        data: (await import("../content/sample.md")).default,
+        fileRelativePath: 'content/sample.md',
+        data: dynamic(async () => await import('../content/sample.md').default),
+        // data: (await import('../content/sample.md')).default,
       },
     },
   };
